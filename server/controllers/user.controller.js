@@ -10,6 +10,7 @@ const cookieOptions = {
 
 const register = async(req,res,next)=>{
     const {fullname , email, password} = req.body;
+    console.log(email , password);
 
     if (!fullname || !email || !password) {
         return next(new AppError(400 , "All fields are required"));
@@ -40,7 +41,7 @@ const register = async(req,res,next)=>{
     const token = await user.generateJWTtoken();
     res.cookie('token' , token, cookieOptions);
 
-    res.status(200).json(
+    return res.status(200).json(
         new AppResponse(200,user,"User registered successfully")
     );
 };
@@ -53,7 +54,7 @@ const login = async(req,res,next)=>{
         if (!email || !password) {
             return next(new AppError(400 , "All fields are required"));
         }
-    
+    console.log("at login-",email,password);
         const user = await User.findOne({email}).select('+password');
         if (!user || !user.comparePassword(password)) {
             return next(new AppError(403 , "Email or password does not match"));
@@ -63,11 +64,11 @@ const login = async(req,res,next)=>{
         user.password = undefined;
         res.cookie('token' , token, cookieOptions);
     
-        res.status(200).json(
+        return res.status(200).json(
             new AppResponse(200,user,"User logged in successfully")
         );
     } catch (error) {
-        return next(new AppError(403 , error.message));
+        return next(new AppError(407 , error.message));
     }
 };
 
@@ -80,7 +81,7 @@ const logout = (req,res)=>{
         maxAge: 0
     });
 
-    res.status(200).json(
+    return res.status(200).json(
         new AppResponse(200,"User logged out successfully")
     );
 };
@@ -89,8 +90,10 @@ const logout = (req,res)=>{
 const getProfile = async(req,res,next)=>{
     try {
         const userId = req.user.id;
+        console.log(userId);
         const user = await User.findById({userId});
-        res.status(200).json(
+        console.log(user);
+        return res.status(200).json(
             new AppResponse(200,user,"User profile fetched successfully")
         );
     } catch (error) {

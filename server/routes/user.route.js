@@ -4,7 +4,8 @@ import { isLoggedIn } from '../middlewares/auth.middleware.js';
 
 const userRouter = Router()
 
-userRouter.post('/register',register);
+// userRouter.post('/register',register);
+userRouter.route('/register').post(register);
 userRouter.post('/login',login);
 userRouter.get('/logout',logout);
 userRouter.get('/me',isLoggedIn , getProfile);
