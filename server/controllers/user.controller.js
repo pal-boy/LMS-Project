@@ -2,6 +2,12 @@ import User from "../models/user.model.js";
 import AppError from "../utils/error.util.js";
 import AppResponse from "../utils/response.util.js";
 
+const cookieOptions = {
+    maxAge: 7*24*60*60*1000 , // 7 days
+    httpOnly: true,
+    secure: true
+};
+
 const register = async(req,res,next)=>{
     const {fullname , email, password} = req.body;
 
@@ -31,24 +37,65 @@ const register = async(req,res,next)=>{
 
     user.password = undefined;
 
+    const token = await user.generateJWTtoken();
+    res.cookie('token' , token, cookieOptions);
+
     res.status(200).json(
         new AppResponse(200,user,"User registered successfully")
     );
 };
 
 
-const login = (req,res)=>{
-
+const login = async(req,res,next)=>{
+    try {
+        const {email, password} = req.body;
+    
+        if (!email || !password) {
+            return next(new AppError(400 , "All fields are required"));
+        }
+    
+        const user = await User.findOne({email}).select('+password');
+        if (!user || !user.comparePassword(password)) {
+            return next(new AppError(403 , "Email or password does not match"));
+        }
+    
+        const token = await user.generateJWTtoken();
+        user.password = undefined;
+        res.cookie('token' , token, cookieOptions);
+    
+        res.status(200).json(
+            new AppResponse(200,user,"User logged in successfully")
+        );
+    } catch (error) {
+        return next(new AppError(403 , error.message));
+    }
 };
+
 
 
 const logout = (req,res)=>{
+    res.cookie('token',null,{
+        httpOnly: true,
+        secure: true,
+        maxAge: 0
+    });
 
+    res.status(200).json(
+        new AppResponse(200,"User logged out successfully")
+    );
 };
 
 
-const getProfile = (req,res)=>{
-
+const getProfile = async(req,res,next)=>{
+    try {
+        const userId = req.user.id;
+        const user = await User.findById({userId});
+        res.status(200).json(
+            new AppResponse(200,user,"User profile fetched successfully")
+        );
+    } catch (error) {
+        return next(new AppError(403 , "Failed to fetch profile details"));
+    }
 };
 
 export {
