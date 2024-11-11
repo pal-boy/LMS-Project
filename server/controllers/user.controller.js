@@ -1,6 +1,8 @@
 import User from "../models/user.model.js";
 import AppError from "../utils/error.util.js";
 import AppResponse from "../utils/response.util.js";
+import cloudinary from 'cloudinary';
+import fs from 'fs'
 
 const cookieOptions = {
     maxAge: 7*24*60*60*1000 , // 7 days
@@ -10,7 +12,6 @@ const cookieOptions = {
 
 const register = async(req,res,next)=>{
     const {fullname , email, password} = req.body;
-    console.log(email , password);
 
     if (!fullname || !email || !password) {
         return next(new AppError(400 , "All fields are required"));
@@ -24,15 +25,36 @@ const register = async(req,res,next)=>{
     const user = await User.create({
         fullname,email,password,
         avatar:{
-            public_id: email,
-            secure_url: 'empty'
+            public_id: "",
+            secure_url: ''
         }
     });
     if (!user) {
         return next(new AppError(401 , "User registration failed")); 
     }
 
-    // TODO : file upload
+    // file upload
+    if (req.file) {
+        console.log(req.file);
+        try {
+            const result = await cloudinary.v2.uploader.upload(req.file.path,{
+                folder:'lms',
+                height:250,
+                width:250,
+                gravity: 'faces',
+                crop: 'fill'
+            });
+            if (result) {
+                user.avatar.public_id = result.public_id;
+                user.avatar.secure_url = result.secure_url;
+
+                // remove file from server
+                fs.rm(`uploads/${req.file.filename}`);
+            }
+        } catch (error) {
+            return next(new AppError(400 , "Error while uploading avatar"));
+        }
+    }
 
     await user.save();
 
