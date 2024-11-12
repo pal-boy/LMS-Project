@@ -3,6 +3,7 @@ import AppError from "../utils/error.util.js";
 import AppResponse from "../utils/response.util.js";
 import cloudinary from 'cloudinary';
 import fs from 'fs'
+import sendEmail from "../utils/sendEmail.util.js";
 
 const cookieOptions = {
     maxAge: 7*24*60*60*1000 , // 7 days
@@ -123,9 +124,52 @@ const getProfile = async(req,res,next)=>{
     }
 };
 
+const forgotPassword = async(req,res,next)=>{
+    const {email} = req.body;
+    if (!email) {
+        return next(new AppError(400 , "Email is required."));
+    };
+
+    const user = await User.findOne({email});
+    if (!user) {
+        return next(new AppError(400 , "Email does not exist."));
+    };
+
+    const resetToken = await user.generatePasswordResetToken();
+    await user.save();
+
+    const resetPasswordURL = `${process.env.FRONTEND_URL}/resetPassword/${resetToken}`;
+    const subject = 'Reset Paswword';
+    const message = `You can reset your password by clicking link <a href=${resetPasswordURL} target="_blank" > Reset your password </a>`;
+
+    try {
+        await sendEmail(email,subject,message);
+
+        return res.status(200).json(
+            new AppResponse(200,`Reset token password url has been sent to ${email} successfully`)
+        );
+    } catch (error) {
+        user.forgotPasswordToken = undefined;
+        user.forgotPasswordExpiry = undefined;
+        await user.save();
+
+        return next(new AppError(500 , "Something went wrong while sending email.",error));
+    }
+}
+
+
+const resetPassword = async(req,res,next)=>{
+    const {resetToken} = req.params;
+    const {resetPassword} = req.body;
+
+    const forgotPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+}
+
 export {
     register,
     login,
     logout,
-    getProfile
+    getProfile,
+    forgotPassword,
+    resetPassword
 }
