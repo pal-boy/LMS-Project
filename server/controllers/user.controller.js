@@ -4,6 +4,7 @@ import AppResponse from "../utils/response.util.js";
 import cloudinary from 'cloudinary';
 import fs from 'fs'
 import sendEmail from "../utils/sendEmail.util.js";
+import crypto from 'crypto';
 
 const cookieOptions = {
     maxAge: 7*24*60*60*1000 , // 7 days
@@ -77,7 +78,7 @@ const login = async(req,res,next)=>{
         if (!email || !password) {
             return next(new AppError(400 , "All fields are required"));
         }
-    console.log("at login-",email,password);
+    
         const user = await User.findOne({email}).select('+password');
         if (!user || !user.comparePassword(password)) {
             return next(new AppError(403 , "Email or password does not match"));
@@ -139,11 +140,12 @@ const forgotPassword = async(req,res,next)=>{
     await user.save();
 
     const resetPasswordURL = `${process.env.FRONTEND_URL}/resetPassword/${resetToken}`;
+    console.log(resetPasswordURL);
     const subject = 'Reset Paswword';
     const message = `You can reset your password by clicking link <a href=${resetPasswordURL} target="_blank" > Reset your password </a>`;
 
     try {
-        await sendEmail(email,subject,message);
+         sendEmail(email,subject,message);
 
         return res.status(200).json(
             new AppResponse(200,`Reset token password url has been sent to ${email} successfully`)
@@ -163,6 +165,24 @@ const resetPassword = async(req,res,next)=>{
     const {resetPassword} = req.body;
 
     const forgotPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    const user = await User.findOne({
+        forgotPasswordToken,
+        forgotPasswordExpiry: {$gt: Date.now()}
+    });
+    if (!user) {
+        return next(new AppError(400 , "Token is invalid or expired! Please try again"));
+    };
+
+    user.password = resetPassword;
+    user.forgotPasswordExpiry = undefined;
+    user.forgotPasswordToken = undefined;
+    user.save();
+
+    return res.status(200).json(
+        new AppResponse(200,"Your password changed successfully")
+    );
+
 }
 
 export {
