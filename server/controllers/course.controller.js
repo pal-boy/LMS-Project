@@ -1,6 +1,8 @@
 import Course from "../models/courses.model.js"
 import AppError from "../utils/error.util.js";
 import AppResponse from "../utils/response.util.js";
+import cloudinary from 'cloudinary';
+import fs from 'fs/promises'
 
 const getAllCourses = async(req,res,next)=>{
     try {
@@ -20,7 +22,7 @@ const getAllCourses = async(req,res,next)=>{
 const getCourseById = async(req,res,next)=>{
     try {
         const {id} = req.params;
-        const course = await Course.findById({id});
+        const course = await Course.findById(id);
 
         if (!course) {
             return next(new AppError(400 , "No such couse is exist"));
@@ -34,7 +36,87 @@ const getCourseById = async(req,res,next)=>{
     }
 }
 
+const createCourses = async(req,res,next)=>{
+    const {title , description , category , createdBy} = req.body;
+    if (!title || !description || !category || !createdBy) {
+        return next(new AppError(400 , "All fields are required"));
+    }
+
+    const course = await Course.create({
+        title,description,category,createdBy,thumbnail :{
+            public_id: 'dummy',
+            secure_url: 'dummy'
+        }
+    });
+    if (!course) {
+        return next(new AppError(500 , "course could not be created"));
+    };
+
+    if (req.file) {
+        const result = await cloudinary.v2.uploader.upload(req.file.path,{
+            folder: "lms"
+        });
+        if (result) {
+            course.thumbnail.public_id = result.public_id;
+            course.thumbnail.secure_url = result.secure_url;
+        };
+        fs.rm(`uploads/${req.file.filename}`);
+    };
+
+    await course.save();
+    return res.status(200).json(
+        new AppResponse(200,course,"Course created successfully")
+    );
+    
+}
+
+
+const updateCourse = async(req,res,next)=>{
+    try {
+        const {id} = req.params;
+        const course = await Course.findByIdAndUpdate(id,
+            {
+            $set: req.body
+            },
+            {
+                runValidators: true
+            }
+        );
+        if (!course) {
+            return next(new AppError(400,"Course with the given id does not exist"));
+        }
+
+        res.status(200).json(
+            new AppResponse(200,course,"Course updated successfully")
+        )
+
+    } catch (error) {
+        return next(new AppError(500 , "error while updating course"));
+    }
+}
+
+
+const removeCourse = async(req,res,next)=>{
+    try {
+        const {id} = req.params;
+        const course = await Course.findByIdAndDelete(id);
+        if (!course) {
+            return next(new AppError(400,"Course with the given id does not exist"));
+        }
+
+        res.status(200).json(
+            new AppResponse(200,course,"Course deleted successfully")
+        )
+
+    } catch (error) {
+        return next(new AppError(500 , "error while deleting course"));
+    }
+}
+
 export {
     getAllCourses,
-    getCourseById
+    getCourseById,
+    createCourses,
+    updateCourse,
+    removeCourse
 }
