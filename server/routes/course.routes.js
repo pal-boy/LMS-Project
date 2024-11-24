@@ -26,7 +26,7 @@ Courserouter.route('/:id')
     upload.single('lecture'),
     addLecturesToCourseById);
 
-Courserouter.route('/course/:id').delete(isLoggedIn,
+Courserouter.route('/:courseId/course/:lectureId').delete(isLoggedIn,
     authorizedRoles('ADMIN'),
     deleteLecture);
 

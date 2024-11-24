@@ -156,18 +156,31 @@ const addLecturesToCourseById = async(req,res,next)=>{
 
 const deleteLecture = async(req,res,next)=>{
     try {
-        const {id} = req.params;
-        const course = await Course.findById(id);
-        console.log(course);
-
-        const lecture = course.lectures;
-        console.log("Lectur : ", lecture);
-        if (!lecture) {
+        const {courseId , lectureId} = req.params;
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return next(new AppError(400,"Course with the given id does not exist"));
+        }
+        // Check if lecture exists
+        const lectureIndex = course.lectures.findIndex(
+            (lec) => lec._id.toString() === lectureId
+        );
+  
+        if (lectureIndex === -1) {
             return next(new AppError(400,"Lecture with the given id does not exist"));
         }
+  
+        // Remove the lecture from the lectures array
+        course.lectures.splice(lectureIndex, 1);
+  
+        // Decrement the number of lectures
+        course.numberOfLectures -= 1;
+  
+        // Save the updated course
+        await course.save();
 
         res.status(200).json(
-            new AppResponse(200,"Lecture deleted successfully")
+            new AppResponse(200,course,"Lecture deleted successfully")
         )
 
     } catch (error) {
