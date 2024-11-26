@@ -34,7 +34,7 @@ const HomeLayout = ({ children }) => {
 
           </label>
 
-          <ul className="menu p-4 w-48 sm:w-80 bg-base-100 text-base-content relative">
+          <ul className="menu p-4 w-48 sm:w-80 text-white bg-gray-700 relative">
               <li className='w-fit right-2 absolute z-50'>
                 <button onClick={hideDrawer}>
                   <AiFillCloseCircle size={24}/>
