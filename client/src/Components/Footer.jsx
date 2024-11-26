@@ -13,13 +13,13 @@ const Footer = () => {
         </section>
 
         <section className='flex items-center justify-center gap-5 text-2xl text-white'>
-            <a className='hover:text-yellow-500 transition-all ease-in-out duration-300' href="#">
+            <a className='hover:text-yellow-500 transition-all ease-in-out duration-300' href="https://www.facebook.com/aakash.pal.585112">
                 <BsFacebook/>
             </a>
-            <a className='hover:text-yellow-500 transition-all ease-in-out duration-300' href="#">
+            <a className='hover:text-yellow-500 transition-all ease-in-out duration-300' href="https://www.instagram.com/_palboy_/">
                 <BsInstagram/>
             </a>
-            <a className='hover:text-yellow-500 transition-all ease-in-out duration-300' href="#">
+            <a className='hover:text-yellow-500 transition-all ease-in-out duration-300' href="https://www.linkedin.com/in/aakash-pal-486370258/">
                 <BsLinkedin/>
             </a>
             <a className='hover:text-yellow-500 transition-all ease-in-out duration-300' href="#">
