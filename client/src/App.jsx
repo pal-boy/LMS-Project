@@ -1,13 +1,12 @@
 import { useState } from 'react'
+import Footer from './Components/Footer'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <div className='font-sans text-6xl text-red-500 bg-green-500'>
-        I am going to start forntend of LMS
-      </div>
+      <Footer/>
     </>
   )
 }
