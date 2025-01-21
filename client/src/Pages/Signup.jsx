@@ -68,12 +68,20 @@ const Signup = () => {
             return;
         }
 
-        const formData = new FormData();
-        formData.append("fullName", signupData.fullName);
-        formData.append("email", signupData.email);
-        formData.append("password", signupData.password);
-        formData.append("avatar", signupData.avatar);
+        // const formData = new FormData();
+        // formData.append("fullName", signupData.fullName);
+        // formData.append("email", signupData.email);
+        // formData.append("password", signupData.password);
+        // formData.append("avatar", signupData.avatar);
 
+        const formData = {
+            fullname: signupData.fullName,
+            email: signupData.email,
+            password: signupData.password,
+            avatar: signupData.avatar // If avatar is required
+        };
+
+        console.log("Form Data:", formData);
         // dispatch create account action
         const response = dispatch(createAccount(formData));
         if(response?.payload?.success)
