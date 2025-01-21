@@ -13,6 +13,7 @@ const cookieOptions = {
 };
 
 const register = async(req,res,next)=>{
+    console.log('Request Body:', req.body);
     const {fullname , email, password} = req.body;
 
     if (!fullname || !email || !password) {
