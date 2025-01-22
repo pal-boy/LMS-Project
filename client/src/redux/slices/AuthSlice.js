@@ -48,7 +48,18 @@ export const login = createAsyncThunk("/auth/login", async(data)=>{
 const authSlice = createSlice({
     name: 'auth',
     initialState,
-    reducers: {}
+    reducers: {},
+    extraReducers: (builder) => {
+        builder
+        .addCase(login.fulfilled, (state, action) => {
+            localStorage.setItem("data", JSON.stringify(action?.payload?.user));
+            localStorage.setItem("isLoggedIn", true);
+            localStorage.setItem("role", action?.payload?.user?.role);
+            state.isLoggedIn = true;
+            state.data = action?.payload?.user;
+            state.role = action?.payload?.user?.role
+        })
+    }
 });
 
 export const {} = authSlice.actions;
