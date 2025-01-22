@@ -81,9 +81,10 @@ const Signup = () => {
             avatar: signupData.avatar // If avatar is required
         };
 
-        console.log("Form Data:", formData);
         // dispatch create account action
-        const response = dispatch(createAccount(formData));
+        const response = await dispatch(createAccount(formData));
+        console.log("Response:", response);
+        console.log("Payload:", response?.payload);
         if(response?.payload?.success)
             navigate("/");
 

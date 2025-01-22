@@ -12,7 +12,7 @@ import paymentRouter from "./routes/payment.routes.js";
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-console.log("Frontend URL:", process.env.FRONTEND_URL);
+
 app.use(cors({
     origin: [process.env.FRONTEND_URL],
     credentials: true
