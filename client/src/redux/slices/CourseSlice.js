@@ -6,7 +6,7 @@ const initialState = {
     courseData: [],
 }
 
-export const getAllCourses = createAsyncThunk("course/get", async()=>{
+export const getAllCourses = createAsyncThunk("course/getAllCourses",   async()=>{
     try {
         const res = axiosInstance.get("/courses");
         toast.promise(res,{
@@ -14,7 +14,7 @@ export const getAllCourses = createAsyncThunk("course/get", async()=>{
             success: "couses fetched successfully",
             error: "Failed to fetch courses"
         });
-        return (await res).data.courses;
+        return (await res).data.data;
     } catch (error) {
         toast.error(error?.response?.data?.message);
         throw error;

@@ -6,7 +6,7 @@ import fs from 'fs/promises'
 
 const getAllCourses = async(req,res,next)=>{
     try {
-        const courses = await Course.findOne({}).select('-lectures');
+        const courses = await Course.find({}).select('-lectures');
         if (!courses) {
             return next(new AppError(400 , "No couses found"));
         }
