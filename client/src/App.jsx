@@ -6,6 +6,7 @@ import Signup from './Pages/Signup.jsx'
 import Login from './Pages/Login.jsx'
 import AllCourseList from './Pages/Course/AllCourseList.jsx'
 import Contact from './Pages/Contact.jsx'
+import Denied from './Pages/Denied.jsx'
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
         <Route path='/' element= {<HomePage/>}/>
         <Route path='/about' element= {<AboutUs/>}/>
         <Route path='/contact' element= {<Contact/>}/>
+        <Route path='/denied' element= {<Denied/>}/>
         <Route path='/courses' element= {<AllCourseList/>}/>
         <Route path='/signup' element= {<Signup/>}/>
         <Route path='/login' element= {<Login/>}/>
