@@ -8,6 +8,7 @@ import AllCourseList from './Pages/Course/AllCourseList.jsx'
 import Contact from './Pages/Contact.jsx'
 import Denied from './Pages/Denied.jsx'
 import CourseDescription from './Pages/Course/CourseDescription.jsx'
+import RequireAuth from './Components/Auth/RequireAuth.jsx'
 
 function App() {
 
@@ -22,6 +23,11 @@ function App() {
         <Route path='/course/description' element= {<CourseDescription/>}/>
         <Route path='/signup' element= {<Signup/>}/>
         <Route path='/login' element= {<Login/>}/>
+
+        <Route element= {<RequireAuth allowedRoles={["ADMIN"]}/>}>
+
+        </Route>
+
         <Route path='*' element= {<NotFoundPage/>}/>
       </Routes>
     </>
