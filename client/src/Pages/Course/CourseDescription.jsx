@@ -6,8 +6,10 @@ import HomeLayout from '../../Layouts/HomeLayout';
 const CourseDescription = () => {
     const { state } = useLocation();
     const navigate = useNavigate();
-
+    // console.log("CourseDescription state", state);
     const { role, data } = useSelector((state) => state.auth);
+    // console.log("stateAuth", useSelector((state) => state.auth));
+    // console.log("CourseDescription role and data", role, data);
 
     return (
         <HomeLayout>
