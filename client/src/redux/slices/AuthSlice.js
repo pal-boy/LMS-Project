@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 const initialState = {
     isLoggedIn : localStorage.getItem('isLoggedIn') || false,
     role : localStorage.getItem('role') || "",
-    data: localStorage.getItem('data') || {}
+    data: localStorage.getItem('data') != undefined ? JSON.parse(localStorage.getItem('data')) : {}
 };
 
 export const createAccount = createAsyncThunk("/auth/signup", async(data)=>{
@@ -62,6 +62,15 @@ export const logout = createAsyncThunk("/auth/logout", async()=>{
     }
 });
 
+export const getUserData = createAsyncThunk("/user/details", async () => {
+    try {
+        const res = axiosInstance.get("user/me");
+        return (await res).data;
+    } catch(error) {
+        toast.error(error.message);
+    }
+});
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
@@ -82,6 +91,15 @@ const authSlice = createSlice({
             state.data = {};
             state.role = ""
         })
+        .addCase(getUserData.fulfilled, (state, response) => {
+            if(!response?.payload?.data) return;
+            localStorage.setItem("data", JSON.stringify(response?.payload?.data));
+            localStorage.setItem("isLoggedIn", true);
+            localStorage.setItem("role", response?.payload?.data?.role);
+            state.isLoggedIn = true;
+            state.data = response?.payload?.data;
+            state.role = response?.payload?.data?.role
+        });
     }
 });
 
