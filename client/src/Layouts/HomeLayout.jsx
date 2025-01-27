@@ -16,6 +16,7 @@ const HomeLayout = ({ children }) => {
 
   // for accessing to what content acc to role
   const role = useSelector((state)=>state?.auth?.role);
+  // console.log("role", role);
 
   const changeWidth =()=>{
     const drawerSide = document.getElementsByClassName('drawer-side');

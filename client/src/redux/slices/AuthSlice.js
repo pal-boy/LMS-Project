@@ -10,7 +10,7 @@ const initialState = {
 
 export const createAccount = createAsyncThunk("/auth/signup", async(data)=>{
     try {
-        console.log("Request Payload:", data);
+        // console.log("Request Payload:", data);
         const res = axiosInstance.post("user/register",data);
         toast.promise(res,{
             loading: "Wait! Creating your account",
@@ -29,7 +29,7 @@ export const createAccount = createAsyncThunk("/auth/signup", async(data)=>{
 
 export const login = createAsyncThunk("/auth/login", async(data)=>{
     try {
-        console.log("Request Payload:", data);
+        // console.log("Request Payload:", data);
         const res = axiosInstance.post("user/login",data);
         toast.promise(res,{
             loading: "Wait! Logging to your account",
@@ -68,13 +68,13 @@ const authSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-        .addCase(login.fulfilled, (state, action) => {
-            localStorage.setItem("data", JSON.stringify(action?.payload?.user));
+        .addCase(login.fulfilled, (state, response) => {
+            localStorage.setItem("data", JSON.stringify(response?.payload?.data));
             localStorage.setItem("isLoggedIn", true);
-            localStorage.setItem("role", action?.payload?.user?.role);
+            localStorage.setItem("role", response?.payload?.data?.role);
             state.isLoggedIn = true;
-            state.data = action?.payload?.user;
-            state.role = action?.payload?.user?.role
+            state.data = response?.payload?.data;
+            state.role = response?.payload?.data?.role
         })
         .addCase(logout.fulfilled, (state) => {
             localStorage.clear();
@@ -85,5 +85,5 @@ const authSlice = createSlice({
     }
 });
 
-export const {} = authSlice.actions;
+// export const {} = authSlice.actions;
 export default authSlice.reducer;
