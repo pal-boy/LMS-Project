@@ -38,7 +38,7 @@ const HomeLayout = ({ children }) => {
   }
 
   return (
-    <div className='min-h-[90vh] bg-gray-700'>
+    <div className='min-h-[10vh] bg-gray-700'>
       <div className="drawer absolute left-0 z-50 w-fit">
         <input type="checkbox" id='my-drawer' className="drawer-toggle" />
 
@@ -68,6 +68,11 @@ const HomeLayout = ({ children }) => {
                   <Link to = '/admin/dashboard'>Admin Dashboard</Link>
                 </li>
               )}
+              {isLoggedIn && role==='ADMIN' && (
+                <li>
+                  <Link to = '/course/create'>Create Course</Link>
+                </li>
+              )}
 
               <li>
                 <Link to = "/courses">COURSES</Link>
@@ -82,7 +87,7 @@ const HomeLayout = ({ children }) => {
               </li>
 
               {!isLoggedIn && (
-                <li className="absolute top-[10rem] w-[90%]">
+                <li className="absolute top-[40rem] w-[90%]">
                   <div className="w-full flex items-center justify-center">
                     <button className='btn-primary border border-red-400 hover:bg-red-400 px-4 py-1 font-semibold rounded-md w-full  transition-all ease-in-out duration-300'>
                       <Link to="/login">Login</Link>
@@ -96,7 +101,7 @@ const HomeLayout = ({ children }) => {
               )}
 
               {isLoggedIn && (
-                <li className="absolute top-[10rem] w-[90%]">
+                <li className="absolute top-[40rem] w-[90%]">
                   <div className="w-full flex items-center justify-center">
                     <button className='btn-primary border border-red-400 hover:bg-red-400 px-4 py-1 font-semibold rounded-md w-full  transition-all ease-in-out duration-300'>
                       <Link to="/user/profile">Profile</Link>
