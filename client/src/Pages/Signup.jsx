@@ -16,10 +16,7 @@ const Signup = () => {
         fullName : "",
         email : "",
         password : "",
-        avatar : {
-            public_id: "",
-            secure_url: ''
-        }
+        avatar : ""
     });
 
     function handleUserInput(e){
@@ -78,21 +75,17 @@ const Signup = () => {
         // formData.append("email", signupData.email);
         // formData.append("password", signupData.password);
         // formData.append("avatar", signupData.avatar);
-        console.log("Avatar:", signupData.avatar);
         const formData = {
             fullname: signupData.fullName,
             email: signupData.email,
             password: signupData.password,
-            avatar: {
-                public_id: signupData.avatar.public_id,
-                secure_url: signupData.avatar.secure_url
-            } // If avatar is required
+            avatar: signupData.avatar // If avatar is required
         };
 
         // dispatch create account action
         const response = await dispatch(createAccount(formData));
-        console.log("Response:", response);
-        console.log("Payload:", response?.payload);
+        // console.log("Response:", response);
+        console.log("Response Payload:", response?.payload);
         if(response?.payload?.success)
             navigate("/");
 
@@ -100,10 +93,7 @@ const Signup = () => {
             fullName: "",
             email: "",
             password: "",
-            avatar: {
-                public_id: "",
-                secure_url: ''
-            }
+            avatar: ""
         });
         setPreviewImage("");
     }

@@ -10,8 +10,12 @@ const initialState = {
 
 export const createAccount = createAsyncThunk("/auth/signup", async(data)=>{
     try {
-        // console.log("Request Payload:", data);
-        const res = axiosInstance.post("user/register",data);
+        console.log("Request Payload:", data);
+        const res = axiosInstance.post("user/register",data, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
         toast.promise(res,{
             loading: "Wait! Creating your account",
             success : (data)=>{
