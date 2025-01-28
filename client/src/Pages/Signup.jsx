@@ -16,7 +16,10 @@ const Signup = () => {
         fullName : "",
         email : "",
         password : "",
-        avatar : ""
+        avatar : {
+            public_id: "",
+            secure_url: ''
+        }
     });
 
     function handleUserInput(e){
@@ -39,7 +42,9 @@ const Signup = () => {
             });
             const fileReader = new FileReader();
             fileReader.readAsDataURL(uploadImage);
+            
             fileReader.addEventListener("load", function () {
+                // console.log("Result:", this.result);
                 setPreviewImage(this.result);
             });
         };
@@ -73,12 +78,15 @@ const Signup = () => {
         // formData.append("email", signupData.email);
         // formData.append("password", signupData.password);
         // formData.append("avatar", signupData.avatar);
-
+        console.log("Avatar:", signupData.avatar);
         const formData = {
             fullname: signupData.fullName,
             email: signupData.email,
             password: signupData.password,
-            avatar: signupData.avatar // If avatar is required
+            avatar: {
+                public_id: signupData.avatar.public_id,
+                secure_url: signupData.avatar.secure_url
+            } // If avatar is required
         };
 
         // dispatch create account action
@@ -92,7 +100,10 @@ const Signup = () => {
             fullName: "",
             email: "",
             password: "",
-            avatar: ""
+            avatar: {
+                public_id: "",
+                secure_url: ''
+            }
         });
         setPreviewImage("");
     }

@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import AppError from "../utils/error.util.js";
 import AppResponse from "../utils/response.util.js";
 import cloudinary from 'cloudinary';
+// import upload from '../middlewares/multer.js';
 import fs from 'fs/promises'
 import sendEmail from "../utils/sendEmail.util.js";
 import crypto from 'crypto';
@@ -13,7 +14,7 @@ const cookieOptions = {
 };
 
 const register = async(req,res,next)=>{
-    console.log('Request Body:', req.body);
+    // console.log('Request Body:', req.body);
     const {fullname , email, password} = req.body;
 
     if (!fullname || !email || !password) {
@@ -38,7 +39,7 @@ const register = async(req,res,next)=>{
 
     // file upload
     if (req.file) {
-        console.log(req.file);
+        console.log("Request File : ",req.file);
         try {
             const result = await cloudinary.v2.uploader.upload(req.file.path,{
                 folder:'lms',
@@ -57,6 +58,9 @@ const register = async(req,res,next)=>{
         } catch (error) {
             return next(new AppError(400 , "Error while uploading avatar"));
         }
+    }
+    else{
+        console.log("No file uploaded");
     }
 
     await user.save();
