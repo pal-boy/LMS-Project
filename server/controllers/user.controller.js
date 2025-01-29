@@ -120,7 +120,7 @@ const getProfile = async(req,res,next)=>{
     try {
         const userId = req.user.id;
         console.log(userId);
-        const user = await User.findById({userId});
+        const user = await User.findById(userId);
         console.log(user);
         return res.status(200).json(
             new AppResponse(200,user,"User profile fetched successfully")
@@ -130,7 +130,51 @@ const getProfile = async(req,res,next)=>{
     }
 };
 
+const updateProfile = async(req,res,next)=>{
+    const{fullName} = req.body;
+    const{id} = req.params;
 
+    const user = await User.findById(id);
+    if (!user) {
+        return next(new AppError(404 , "Invalid user id or User not found"));
+    }
+
+    if (fullName) {
+        user.fullname = fullName;
+    }
+
+    if (req.file) {
+        // delete the old image uploaded by the user
+        if (user.avatar.public_id) {
+            await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+        }
+
+        try {
+            const result = await cloudinary.v2.uploader.upload(req.file.path,{
+                folder:'lms',
+                height:250,
+                width:250,
+                gravity: 'faces',
+                crop: 'fill'
+            });
+            if (result) {
+                user.avatar.public_id = result.public_id;
+                user.avatar.secure_url = result.secure_url;
+
+                // remove file from server
+                fs.rm(`uploads/${req.file.filename}`);
+            }
+        } catch (error) {
+            return next(new AppError(400 , "Error while uploading avatar"));
+        }
+    }
+
+    await user.save();
+
+    return res.status(200).json(
+        new AppResponse(200,user,"User profile updated successfully")
+    );
+}
 
 const forgotPassword = async(req,res,next)=>{
     const {email} = req.body;
@@ -197,6 +241,7 @@ export {
     login,
     logout,
     getProfile,
+    updateProfile,
     forgotPassword,
     resetPassword
 }
