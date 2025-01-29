@@ -3,9 +3,10 @@ import HomeLayout from '../Layouts/HomeLayout';
 import toast from 'react-hot-toast';
 import { isEmail } from '../Helpers/regexMatcher';
 import axiosInstance from '../Helpers/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 
 const Contact = () => {
-
+    const navigate = useNavigate();
     const [userInput , setUserInput] = useState({
         name: '',
         email: '',
@@ -44,6 +45,7 @@ const Contact = () => {
                     message: ''
                 });
             };
+            navigate('/');
         } catch (error) {
             toast.error('Something went wrong while submitting response');
         }
@@ -107,7 +109,7 @@ const Contact = () => {
 
                 </div>
                 <button type="submit"
-                    className="w-full bg-yellow-600hover:bg-yellow-500 transition-all ease-in-outduration-300 rounded-sm py-2 font-semiboldtext-lg cursor-pointer"
+                    className="w-full bg-yellow-600 hover:bg-yellow-500 transition-all ease-in-outduration-300 rounded-sm py-2 font-semiboldtext-lg cursor-pointer"
                 >
                     Submit
                 </button>

@@ -119,9 +119,9 @@ const logout = (req,res)=>{
 const getProfile = async(req,res,next)=>{
     try {
         const userId = req.user.id;
-        console.log(userId);
+        // console.log(userId);
         const user = await User.findById(userId);
-        console.log(user);
+        // console.log(user);
         return res.status(200).json(
             new AppResponse(200,user,"User profile fetched successfully")
         );
