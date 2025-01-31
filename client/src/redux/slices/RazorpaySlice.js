@@ -13,7 +13,7 @@ const initialState = {
 
 export const getRazorpayKey = createAsyncThunk("/payment/key", async () => {
     try {
-        const res = await axiosInstance.get("payments/razorpay-key");
+        const res = await axiosInstance.get("/payments/razorpay-key");
         return res.data;
     } catch(error) {
         toast.error(error.message);
@@ -22,7 +22,7 @@ export const getRazorpayKey = createAsyncThunk("/payment/key", async () => {
 
 export const buySubscription = createAsyncThunk("/payment/subscription", async () => {
     try {
-        const res = await axiosInstance.post("payments/subscribe");
+        const res = await axiosInstance.post("/payments/subscribe");
         return res.data;
     } catch(error) {
         toast.error(error.message);

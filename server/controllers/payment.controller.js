@@ -6,6 +6,7 @@ import Payment from "../models/payment.model.js";
 
 const getRazorpayApiKey = async(req,res,next)=>{
     const key = process.env.RAZORPAY_KEY_ID;
+    console.log("Razorpay API Key : ",key);
     res.status(200).json(
         new AppResponse(200,key,"Razorpay API Key")
     )
@@ -26,18 +27,26 @@ const buySubscription = async(req,res,next)=>{
         );
     };
 
-    const subscription = await razorpay.subscriptions.create({
-        plain_id : process.env.RAZORPAY_PLAN_ID,
-        customer_notify : 1
-    });
-    user.subscription.id = subscription.id;
-    user.subscription.status = subscription.status;
-
-    await user.save();
-
-    res.status(200).json(
-        new AppResponse(200,subscription.id,"Subscribed successfully")
-    )
+    try {
+        const subscription = await razorpay.subscriptions.create({
+            plan_id : process.env.RAZORPAY_PLAN_ID,
+            customer_notify : 1
+        });
+        console.log("Subscription : ",subscription);
+        user.subscription.id = subscription.id;
+        user.subscription.status = subscription.status;
+    
+        await user.save();
+    
+        res.status(200).json(
+            new AppResponse(200,subscription.id,"Subscribed successfully")
+        )
+    } catch (error) {
+        return next(
+            new AppError(500,"Payment failed , please try again later!")
+        );
+        
+    }
 }
 
 const verifySubscription = async(req,res,next)=>{
