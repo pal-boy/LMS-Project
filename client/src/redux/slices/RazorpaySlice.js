@@ -20,9 +20,10 @@ export const getRazorpayKey = createAsyncThunk("/payment/key", async () => {
     }
 });
 
-export const buySubscription = createAsyncThunk("/payment/subscription", async () => {
+export const buySubscription = createAsyncThunk("/payment/subscription", async (data) => {
+    console.log("Request Payload Data:", data);
     try {
-        const res = await axiosInstance.post("/payments/subscribe");
+        const res = await axiosInstance.post("/payments/subscribe",data);
         return res.data;
     } catch(error) {
         toast.error(error.message);

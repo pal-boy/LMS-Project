@@ -3,6 +3,7 @@ import User from "../models/user.model.js";
 import AppError from "../utils/error.util.js";
 import { razorpay } from "../server.js";
 import Payment from "../models/payment.model.js";
+import Subscription from "../models/subscription.model.js";
 
 const getRazorpayApiKey = async(req,res,next)=>{
     const key = process.env.RAZORPAY_KEY_ID;
@@ -12,42 +13,84 @@ const getRazorpayApiKey = async(req,res,next)=>{
     )
 }
 
-const buySubscription = async(req,res,next)=>{
-    const {id} = req.user;
-    const user = await User.findById(id);
-    if (!user) {
-        return next(
-            new AppError(400,"Unauthorized user , please login!")
-        );
-    }
+// const buySubscription = async(req,res,next)=>{
+//     const {id} = req.user;
+//     const user = await User.findById(id);
+//     if (!user) {
+//         return next(
+//             new AppError(400,"Unauthorized user , please login!")
+//         );
+//     }
 
-    if (user.role === 'ADMIN') {
-        return next(
-            new AppError(400,"You are ADMIN , you can't purchase!!")
-        );
-    };
+//     if (user.role === 'ADMIN') {
+//         return next(
+//             new AppError(400,"You are ADMIN , you can't purchase!!")
+//         );
+//     };
 
-    try {
-        const subscription = await razorpay.subscriptions.create({
-            plan_id : process.env.RAZORPAY_PLAN_ID,
-            customer_notify : 1
-        });
-        console.log("Subscription : ",subscription);
-        user.subscription.id = subscription.id;
-        user.subscription.status = subscription.status;
+//     try {
+//         const subscription = await razorpay.subscriptions.create({
+//             plan_id : process.env.RAZORPAY_PLAN_ID,
+//             customer_notify : 1
+//         });
+//         console.log("Subscription : ",subscription);
+//         user.subscription.id = subscription.id;
+//         user.subscription.status = subscription.status;
     
-        await user.save();
+//         await user.save();
     
-        res.status(200).json(
-            new AppResponse(200,subscription.id,"Subscribed successfully")
-        )
-    } catch (error) {
-        return next(
-            new AppError(500,"Payment failed , please try again later!")
-        );
+//         res.status(200).json(
+//             new AppResponse(200,subscription.id,"Subscribed successfully")
+//         )
+//     } catch (error) {
+//         return next(
+//             new AppError(500,"Payment failed , please try again later!")
+//         );
         
+//     }
+// }
+const buySubscription = async (req, res,next) => {
+    try {
+        console.log("Request Body:", req.body);
+        const { userId, courseId } = req.body;
+
+        if (!userId || !courseId) {
+            return next(
+                new AppError(400, "User ID and Course ID are required to buy a subscription.")
+            );
+        }
+
+        // Define Razorpay Subscription Plan Details
+        const subscriptionOptions = {
+            plan_id: process.env.RAZORPAY_PLAN_ID, // Predefined plan in Razorpay dashboard
+            customer_notify: 1,
+            total_count: 12, // Example: 12 months
+        };
+
+        // Create a new Razorpay subscription
+        const subscription = await razorpay.subscriptions.create(subscriptionOptions);
+
+        // Save subscription details in the database
+        const newSubscription = new Subscription({
+            userId,
+            courseId,
+            razorpaySubscriptionId: subscription.id,
+            status: "pending",
+        });
+
+        await newSubscription.save();
+
+        res.status(200).json(
+            new AppResponse(200, subscription, "Subscribed successfully")
+        );
+
+    } catch (error) {
+        console.error("Error in buying subscription:", error);
+        return next(
+            new AppError(500, "Payment failed, please try again later.")
+        );
     }
-}
+};
 
 const verifySubscription = async(req,res,next)=>{
     const {id} = req.user;

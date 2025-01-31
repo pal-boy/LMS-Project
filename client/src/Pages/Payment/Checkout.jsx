@@ -13,6 +13,9 @@ const Checkout = () => {
     const subscription_id = useSelector((state) => state.razorpay.subscription_id);
     const isPaymentVerified = useSelector((state) => state.razorpay.isPaymentVerified);
     const userData = useSelector((state) => state.auth.data);
+    const courseData = useSelector((state) => state.course.courseData[0]);
+    console.log("Course Data : ",courseData);
+    console.log("User Data : ",userData);
     const paymentDetails = {
         razorpay_payment_id: "",
         razorpay_subscription_id: "",
@@ -52,9 +55,12 @@ const Checkout = () => {
         rzpObj.open();
     }
 
+    const formData = new FormData();
+    formData.append("userId", userData._id);
+    formData.append("courseId", courseData._id);
     async function load(){
         await dispatch(getRazorpayKey());
-        await dispatch(buySubscription());
+        await dispatch(buySubscription(formData));
     }
     useEffect(() => {
        load();
