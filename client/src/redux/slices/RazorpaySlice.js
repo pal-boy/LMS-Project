@@ -21,9 +21,14 @@ export const getRazorpayKey = createAsyncThunk("/payment/key", async () => {
 });
 
 export const buySubscription = createAsyncThunk("/payment/subscription", async (data) => {
-    console.log("Request Payload Data:", data);
+    // console.log("Request Payload Data:", data);
     try {
-        const res = await axiosInstance.post("/payments/subscribe",data);
+        const res = await axiosInstance.post("/payments/subscribe",data, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            withCredentials: true
+        });
         return res.data;
     } catch(error) {
         toast.error(error.message);
@@ -82,13 +87,15 @@ const PaymentSlice = createSlice({
     extraReducers: (builder) => {
         builder
         .addCase(getRazorpayKey.fulfilled, (state, action) =>{
-            state.key = action?.payload?.key;
+            // console.log("Razorpay Key:", action?.payload?.data);
+            state.key = action?.payload?.data;
         })
         .addCase(buySubscription.fulfilled, (state, action) => {
-            state.subscription_id = action?.payload?.subscription_id;
+            // console.log("Subscription ID:", action?.payload?.data.id);
+            state.subscription_id = action?.payload?.data.id;
         })
         .addCase(verifySubscription.fulfilled, (state, action) => {
-            console.log(action);
+            console.log("verifySubcription : ",action?.payload);
             toast.success(action?.payload?.message);
             state.isPaymentVerified = action?.payload?.success;
         })

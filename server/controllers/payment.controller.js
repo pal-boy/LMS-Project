@@ -51,7 +51,7 @@ const getRazorpayApiKey = async(req,res,next)=>{
 // }
 const buySubscription = async (req, res,next) => {
     try {
-        console.log("Request Body:", req.body);
+        // console.log("Request Body:", req.body);
         const { userId, courseId } = req.body;
 
         if (!userId || !courseId) {

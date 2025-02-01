@@ -14,8 +14,8 @@ const Checkout = () => {
     const isPaymentVerified = useSelector((state) => state.razorpay.isPaymentVerified);
     const userData = useSelector((state) => state.auth.data);
     const courseData = useSelector((state) => state.course.courseData[0]);
-    console.log("Course Data : ",courseData);
-    console.log("User Data : ",userData);
+    // console.log("Course Data : ",courseData);
+    // console.log("User Data : ",userData);
     const paymentDetails = {
         razorpay_payment_id: "",
         razorpay_subscription_id: "",
@@ -24,6 +24,8 @@ const Checkout = () => {
 
     async function handleSubscription(e) {
         e.preventDefault();
+        // console.log("Razorpay Key at checkout:", razorpaykey);
+        // console.log("Subscription ID at checkout:", subscription_id);
         if(!razorpaykey || !subscription_id) {
             toast.error("Failed to load razorpay key or subscription id");
             return;
