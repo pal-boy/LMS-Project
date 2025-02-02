@@ -35,22 +35,23 @@ const Checkout = () => {
             subscription_id: subscription_id,
             name: "Coursify Palboy pvt. ltd.",
             description: "Subscription",
-            handler: async function(response) {
-                paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
-                paymentDetails.razorpay_subscription_id = response.razorpay_subscription_id;
-                paymentDetails.razorpay_signature = response.razorpay_signature;
-
-                toast.success("Payment successful");
-                await dispatch(verifySubscription(paymentDetails));
-                isPaymentVerified ? navigate("/checkout/success") : navigate("/checkout/fail");
-                navigate("/user/profile");
-            },
             prefill: {
                 name: userData.name,
                 email: userData.email,
             },
             theme: {
                 color: "#F37254"
+            },
+            handler: async function(response) {
+                console.log("Handler Response : ",response);
+                paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
+                paymentDetails.razorpay_subscription_id = response.razorpay_subscription_id;
+                paymentDetails.razorpay_signature = response.razorpay_signature;
+                console.log("Payment Details : ",paymentDetails);
+                toast.success("Payment successful");
+                const res = await dispatch(verifySubscription(paymentDetails));
+                console.log("Verify subscription res :",res);
+                res?.payload?.success ? navigate("/checkout/success") : navigate("/checkout/fail");
             }
         };
         const rzpObj = new window.Razorpay(options);

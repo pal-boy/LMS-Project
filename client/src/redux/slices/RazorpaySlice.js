@@ -36,6 +36,7 @@ export const buySubscription = createAsyncThunk("/payment/subscription", async (
 });
 
 export const verifySubscription = createAsyncThunk("/payment/verify", async (data) => {
+    console.log("Verify Subscription Data2:", data);
     try {
         const response = await axiosInstance.post("/payments/verify", {
             razorpay_payment_id: data.razorpay_payment_id,
