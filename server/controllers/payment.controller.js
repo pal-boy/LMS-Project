@@ -7,7 +7,7 @@ import Subscription from "../models/subscription.model.js";
 
 const getRazorpayApiKey = async(req,res,next)=>{
     const key = process.env.RAZORPAY_KEY_ID;
-    console.log("Razorpay API Key : ",key);
+    // console.log("Razorpay API Key : ",key);
     res.status(200).json(
         new AppResponse(200,key,"Razorpay API Key")
     )
