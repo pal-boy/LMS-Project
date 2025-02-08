@@ -40,7 +40,7 @@ const HomeLayout = ({ children }) => {
 
   return (
     <div className='min-h-[10vh] bg-gray-700'>
-      <div className="drawer absolute left-0 z-50 w-fit">
+      <div className="drawer absolute left-0 z-50 w-fit ">
         <input type="checkbox" id='my-drawer' className="drawer-toggle" />
 
         <div className="drawer-content">
@@ -102,7 +102,7 @@ const HomeLayout = ({ children }) => {
               )}
 
               {isLoggedIn && (
-                <li className="absolute top-[40rem] w-[90%]">
+                <li className="absolute top-[31rem] sm:top-[40rem] w-[90%]">
                   <div className="w-full flex items-center justify-center">
                     <button className='btn-primary border border-red-400 hover:bg-red-400 px-4 py-1 font-semibold rounded-md w-full  transition-all ease-in-out duration-300'>
                       <Link to="/user/profile">Profile</Link>
