@@ -8,10 +8,10 @@ const AboutUs = () => {
   return (
     <HomeLayout>
         <div className="pl-10 sm:pl-20 pt-5 flex flex-col text-white">
-            <div className="sm:flex sm:items-center gap-5 sm:mx-10">
+            <div className="sm:flex sm:items-center justify-between sm:gap-5 sm:mx-10">
                 <section 
                     style={{'--aboutimage-url': `url(${aboutMainImage})`}} 
-                    className={`mt-20 bg-[image:var(--aboutimage-url)] bg-contain bg-center bg-no-repeat sm:w-1/2 sm:space-y-10 sm:bg-none`}>
+                    className={`mt-16 bg-[image:var(--aboutimage-url)] bg-contain bg-center bg-no-repeat sm:w-1/2 sm:space-y-10 sm:bg-none`}>
                     <h1 className='text-3xl sm:text-5xl text-yellow-500 font-semibold'>
                         Affordable and quality education
                     </h1>
@@ -26,13 +26,13 @@ const AboutUs = () => {
                         style={{
                             filter: "drop-shadow(0px 10px 10px rgb(0,0,0));"
                         }}
-                        className="drop-shadow-2xl" 
+                        className="drop-shadow-2xl m-auto" 
                         src={aboutMainImage} 
                         alt="about main image" />
                 </div>
             </div>
 
-            <div className="carousel w-1/2 m-auto my-16">
+            <div className="carousel sm:w-1/2 sm:m-auto sm:my-16">
                 {celebrities && celebrities.map(celebrity =>   (<CarouselSlide {...celebrity} 
                             key={celebrity.slideNum} 
                             totalSlides={celebrities.length}        
