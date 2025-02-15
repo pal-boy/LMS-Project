@@ -16,8 +16,8 @@ const AllCourseList = () => {
     },[]);
   return (
     <HomeLayout>
-            <div className="min-h-[90vh] pt-12 pl-20 flex flex-col gap-10 text-white">
-                <h1 className="text-center text-3xl font-semibold mb-5">
+            <div className="min-h-[90vh] pl-5 pt-12 sm:pl-20 flex flex-col gap-10 text-white">
+                <h1 className="text-center mt-5 sm:mt-0 text-xl sm:text-3xl font-semibold mb-1 sm:mb-5">
                     Explore the courses made by &nbsp;
                     <span className="font-bold text-yellow-500">
                         Industry experts
