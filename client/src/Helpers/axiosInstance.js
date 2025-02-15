@@ -1,12 +1,13 @@
-import dotenv from 'dotenv';
-dotenv.config();
+
 import axios from "axios";
 
 // const base_URL = "http://localhost:5010/api/v1/";
 // const axiosInstance = axios.create();
 
+console.log("backened url");
+console.log(import.meta.env.VITE_BACKEND_URL);
 const axiosInstance = axios.create({
-    baseURL: process.env.BASE_URL,
+    baseURL: import.meta.env.VITE_BACKEND_URL,
     withCredentials: true,
     headers: {
         'Cache-Control': 'no-cache',
