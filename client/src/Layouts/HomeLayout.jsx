@@ -88,7 +88,7 @@ const HomeLayout = ({ children }) => {
               </li>
 
               {!isLoggedIn && (
-                <li className="absolute top-[31rem] w-[90%]">
+                <li className="absolute top-[35rem] w-[90%]">
                   <div className="w-full flex items-center justify-center">
                     <button className='btn-primary border border-red-400 hover:bg-red-400 px-4 py-1 font-semibold rounded-md w-full  transition-all ease-in-out duration-300'>
                       <Link to="/login">Login</Link>
@@ -102,7 +102,7 @@ const HomeLayout = ({ children }) => {
               )}
 
               {isLoggedIn && (
-                <li className="absolute top-[31rem] sm:top-[40rem] w-[90%]">
+                <li className="absolute top-[35rem] sm:top-[40rem] w-[90%]">
                   <div className="w-full flex items-center justify-center">
                     <button className='btn-primary border border-red-400 hover:bg-red-400 px-4 py-1 font-semibold rounded-md w-full  transition-all ease-in-out duration-300'>
                       <Link to="/user/profile">Profile</Link>
