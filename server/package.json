@@ -35,5 +35,8 @@
     "nodemailer": "^6.9.16",
     "nodemon": "^3.1.7",
     "razorpay": "^2.9.5"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
   }
 }
