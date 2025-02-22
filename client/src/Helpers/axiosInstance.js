@@ -8,6 +8,7 @@ console.log("backened url");
 console.log(import.meta.env.VITE_BACKEND_URL);
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
+    accessControlAllowCredentials: true,
     withCredentials: true,
     headers: {
         'Cache-Control': 'no-cache',
