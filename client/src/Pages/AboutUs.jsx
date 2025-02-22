@@ -7,7 +7,7 @@ import CarouselSlide from '../Components/CarouselSlide.jsx'
 const AboutUs = () => {
   return (
     <HomeLayout>
-        <div className="pl-10 sm:pl-20 pt-5 flex flex-col text-white">
+        <div className="pl-8 sm:pl-20 pt-5 flex flex-col text-white">
             <div className="sm:flex sm:items-center justify-between sm:gap-5 sm:mx-10">
                 <section 
                     style={{'--aboutimage-url': `url(${aboutMainImage})`}} 

@@ -3,7 +3,7 @@ import React from 'react'
 const CarouselSlide = ({image , title, description, slideNum, totalSlides }) => {
     return (
         <div id={`slide${slideNum}`} className="carousel-item relative w-full">
-            <div className="mt-5 sm:mt-0 flex flex-col items-center justify-center gap-4 sm:px-[15%]">
+            <div className="mt-5 mb-5 sm:mb-0 sm:mt-0 flex flex-col items-center justify-center gap-4 sm:px-[15%]">
                 <img src={image} className="w-20 sm:w-40 rounded-full border-2 border-gray-400" />
                 <p className="text-sm pl-1 w-[60%] sm:w-full sm:text-xl text-gray-200">
                     {description}
