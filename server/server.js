@@ -1,5 +1,5 @@
 import app from "./app.js";
-import { createServer } from "@vercel/node";
+import vercelNode from "@vercel/node";
 import { config } from "dotenv";
 import connectionToDB from "./db_config/db_connection.js";
 // import { v2 } from "cloudinary";
@@ -7,6 +7,7 @@ import Razorpay from "razorpay";
 
 config();
 
+const { createServer } = vercelNode;
 const PORT = process.env.PORT || 5000;
 
 // cloudinary configuraton
