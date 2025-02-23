@@ -8,13 +8,13 @@ console.log("backened url");
 console.log(import.meta.env.VITE_BACKEND_URL);
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
-    accessControlAllowCredentials: true,
     withCredentials: true,
-    // headers: {
-    //     "Content-Type": "application/json",
-    //     "Access-Control-Allow-Origin": "*",
-    //     "Access-Control-Allow-Headers": "Content-Type",
-    // }
+    headers: {
+        // "Content-Type": "application/json",
+        // "Access-Control-Allow-Origin": "*",
+        // "Access-Control-Allow-Headers": "Content-Type",
+        "Access-control-Allow-credentials": true
+    }
 });
 
 // axiosInstance.defaults.baseURL = base_URL;
