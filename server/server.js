@@ -26,10 +26,12 @@ export const razorpay = new Razorpay({
     key_secret : process.env.RAZORPAY_SECRET
 });
 
-server.listen(PORT,async()=>{
-    await connectionToDB();
-    console.log(`App is running at http://localhost:${PORT}`);
-})
+if (!global.serverInstance) {
+    global.serverInstance = server.listen(PORT,async()=>{
+        await connectionToDB();
+        console.log(`App is running at http://localhost:${PORT}`);
+    });
+}
 
 // export default createServer(app);
 export default server;
