@@ -10,11 +10,11 @@ const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_BACKEND_URL,
     accessControlAllowCredentials: true,
     withCredentials: true,
-    headers: {
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache',
-        'Expires': '0'
-    }
+    // headers: {
+    //     "Content-Type": "application/json",
+    //     "Access-Control-Allow-Origin": "*",
+    //     "Access-Control-Allow-Headers": "Content-Type",
+    // }
 });
 
 // axiosInstance.defaults.baseURL = base_URL;
