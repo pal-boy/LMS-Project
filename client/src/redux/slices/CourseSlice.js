@@ -30,7 +30,12 @@ export const createNewCourse = createAsyncThunk("/course/create", async (data) =
         formData.append("createdBy", data?.createdBy);
         formData.append("thumbnail", data?.thumbnail);
 
-        const response = axiosInstance.post("/courses", formData);
+        const response = axiosInstance.post("/courses", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Access-Control-Allow-Origin': 'true'
+            }
+        });
         toast.promise(response, {
             loading: "Creating new course",
             success: "Course created successfully",
