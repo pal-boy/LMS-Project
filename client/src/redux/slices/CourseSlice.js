@@ -8,7 +8,7 @@ const initialState = {
 
 export const getAllCourses = createAsyncThunk("course/getAllCourses",   async()=>{
     try {
-        const res = axiosInstance.get("/courses");
+        const res = axiosInstance.get("/courses",{withCredentials:true});
         toast.promise(res,{
             loading: "Wait! Courses are loading",
             success: "couses fetched successfully",
@@ -33,7 +33,7 @@ export const createNewCourse = createAsyncThunk("/course/create", async (data) =
         const response = axiosInstance.post("/courses", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
-                'Access-Control-Allow-Credentials': 'true'
+                'Access-Control-Allow-Credentials': true
             }
         });
         toast.promise(response, {
