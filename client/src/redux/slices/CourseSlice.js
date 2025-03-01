@@ -8,7 +8,11 @@ const initialState = {
 
 export const getAllCourses = createAsyncThunk("course/getAllCourses",   async()=>{
     try {
-        const res = axiosInstance.get("/courses",{credentials:'include'});
+        const res = axiosInstance.get("/courses",{
+            headers: {
+                "Access-Control-Allow-Credentials": true
+            }
+        });
         toast.promise(res,{
             loading: "Wait! Courses are loading",
             success: "couses fetched successfully",
