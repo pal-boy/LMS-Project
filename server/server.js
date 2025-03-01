@@ -35,7 +35,12 @@ export const razorpay = new Razorpay({
 
 // export default createServer(app);
 // export default server;
-export default app.listen(PORT,async()=>{
+// export default app.listen(PORT,async()=>{
+//     await connectionToDB();
+//     console.log(`App is running at http://localhost:${PORT}`);
+// });
+
+app.listen(PORT,async()=>{
     await connectionToDB();
     console.log(`App is running at http://localhost:${PORT}`);
 });
