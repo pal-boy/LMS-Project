@@ -37,6 +37,7 @@ const getCourseById = async(req,res,next)=>{
 }
 
 const createCourses = async(req,res,next)=>{
+    console.log("Course creation is in process");
     const {title , description , category , createdBy} = req.body;
     if (!title || !description || !category || !createdBy) {
         return next(new AppError(400 , "All fields are required"));
@@ -48,9 +49,11 @@ const createCourses = async(req,res,next)=>{
             secure_url: 'dummy'
         }
     });
+    console.log("course created!!!",course);
     if (!course) {
         return next(new AppError(500 , "course could not be created"));
     };
+    console.log("course cannot created!!!", course);
 
     if (req.file) {
         const result = await cloudinary.v2.uploader.upload(req.file.path,{

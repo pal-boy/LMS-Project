@@ -30,8 +30,9 @@ export const createNewCourse = createAsyncThunk("/course/create", async (data) =
         formData.append("category", data?.category);
         formData.append("createdBy", data?.createdBy);
         formData.append("thumbnail", data?.thumbnail);
-
-        const response = axiosInstance.post("/courses", formData, {
+        
+        console.log("Course form data - ",formData);
+        const response = await axiosInstance.post("/courses", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 // 'Access-Control-Allow-Credentials': true
