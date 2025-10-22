@@ -2,6 +2,8 @@ import app from "./app.js";
 // import vercelNode from "@vercel/node";
 import { config } from "dotenv";
 import connectionToDB from "./db_config/db_connection.js";
+// import pkg from "cloudinary";
+// const { v2 } = pkg;
 // import { v2 } from "cloudinary";
 import Razorpay from "razorpay";
 // import http from "http";

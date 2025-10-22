@@ -22,7 +22,7 @@ export const getAllCourses = createAsyncThunk("course/getAllCourses",   async()=
     }
 }); // Add the API endpoint here
 
-export const createNewCourse = createAsyncThunk("/course/create", async (data) => {
+export const createNewCourse = createAsyncThunk("/course/createCourses", async (data) => {
     try {
         let formData = new FormData();
         formData.append("title", data?.title);
@@ -32,7 +32,7 @@ export const createNewCourse = createAsyncThunk("/course/create", async (data) =
         formData.append("thumbnail", data?.thumbnail);
         
         console.log("Course form data - ",formData);
-        const response = await axiosInstance.post("/courses", formData, {
+        const response =  axiosInstance.post("/courses", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 // 'Access-Control-Allow-Credentials': true
@@ -60,7 +60,13 @@ const courseSlice = createSlice({
             if(action.payload){
                 state.courseData = [...action.payload];
             }
-        })
+        });
+        builder.addCase(createNewCourse.fulfilled, (state,action)=>{
+            if(action.payload){
+                console.log("Course action payload ",action.payload);
+                state.courseData.push(action.payload);
+            }
+        });
     },
 });
 
