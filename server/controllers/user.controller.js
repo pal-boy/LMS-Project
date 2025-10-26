@@ -56,6 +56,7 @@ const register = async(req,res,next)=>{
                 fs.rm(`uploads/${req.file.filename}`);
             }
         } catch (error) {
+            console.log(error);
             return next(new AppError(400 , "Error while uploading avatar"));
         }
     }

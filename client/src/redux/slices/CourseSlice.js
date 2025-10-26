@@ -31,7 +31,7 @@ export const createNewCourse = createAsyncThunk("/course/createCourses", async (
         formData.append("createdBy", data?.createdBy);
         formData.append("thumbnail", data?.thumbnail);
         
-        console.log("Course form data - ",formData);
+        
         const response =  axiosInstance.post("/courses", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -63,7 +63,6 @@ const courseSlice = createSlice({
         });
         builder.addCase(createNewCourse.fulfilled, (state,action)=>{
             if(action.payload){
-                console.log("Course action payload ",action.payload);
                 state.courseData.push(action.payload);
             }
         });
