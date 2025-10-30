@@ -93,10 +93,11 @@ const PaymentSlice = createSlice({
         })
         .addCase(buySubscription.fulfilled, (state, action) => {
             // console.log("Subscription ID:", action?.payload?.data.id);
+            console.log("Buy subs ",action.payload);
             state.subscription_id = action?.payload?.data.id;
         })
         .addCase(verifySubscription.fulfilled, (state, action) => {
-            console.log("verifySubcription : ",action?.payload);
+            console.log("verifySubcription : ",action);
             toast.success(action?.payload?.message);
             state.isPaymentVerified = action?.payload?.success;
         })

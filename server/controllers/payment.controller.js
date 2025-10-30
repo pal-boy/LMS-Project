@@ -77,9 +77,19 @@ const buySubscription = async (req, res,next) => {
             razorpaySubscriptionId: subscription.id,
             status: "pending",
         });
-
+        
         await newSubscription.save();
 
+        const user = await User.findById(userId);
+        if (!user) {
+            return next(new AppError(404, "User not found"));
+        }
+        user.subscription = {
+            id: subscription.id,
+            status: subscription.status || 'pending'
+        };
+        await user.save();
+        console.log("New subscription User",user);
         res.status(200).json(
             new AppResponse(200, subscription, "Subscribed successfully")
         );
@@ -102,7 +112,9 @@ const verifySubscription = async(req,res,next)=>{
             new AppError(400,"Unauthorized user , please login!")
         );
     };
-
+    console.log("subcription user ",user);
+    console.log("subcription user ",user.newSubscription);
+    console.log("subcription user22 ",Subscription.findOne({userId: user._id}));
     const subscriptionId = user.subscription.id;
     const generatedSignature = crypto
                 .createHmac('sha256' , process.env.RAZORPAY_SECRET)
