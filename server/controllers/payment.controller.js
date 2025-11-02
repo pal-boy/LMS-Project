@@ -4,6 +4,8 @@ import AppError from "../utils/error.util.js";
 import { razorpay } from "../server.js";
 import Payment from "../models/payment.model.js";
 import Subscription from "../models/subscription.model.js";
+import crypto from 'crypto';
+// import { createHmac } from "crypto";
 
 const getRazorpayApiKey = async(req,res,next)=>{
     const key = process.env.RAZORPAY_KEY_ID;
@@ -112,10 +114,17 @@ const verifySubscription = async(req,res,next)=>{
             new AppError(400,"Unauthorized user , please login!")
         );
     };
-    console.log("subcription user ",user);
-    console.log("subcription user ",user.newSubscription);
-    console.log("subcription user22 ",Subscription.findOne({userId: user._id}));
-    const subscriptionId = user.subscription.id;
+
+    let subscriptionId = user.subscription && user.subscription.id ? user.subscription.id : null;
+    if (!subscriptionId) {
+        const pendingSub = await Subscription.findOne({ userId: user._id, status: 'pending' });
+        if (pendingSub) subscriptionId = pendingSub.razorpaySubscriptionId;
+    }
+
+    if (!subscriptionId) {
+        return next(new AppError(400, "No subscription found for this user."));
+    }
+
     const generatedSignature = crypto
                 .createHmac('sha256' , process.env.RAZORPAY_SECRET)
                 .update(`${razorpay_payment_id}|${subscriptionId}`)
@@ -127,14 +136,22 @@ const verifySubscription = async(req,res,next)=>{
         );
     };
 
-    await Payment.create({
-        razorpay_payment_id , 
-        razorpay_signature , 
-        razorpay_subscription_id
+    const paymentDoc = await Payment.create({
+        paymentId: razorpay_payment_id,
+        signature: razorpay_signature,
+        subscriptionId: razorpay_subscription_id || subscriptionId,
+        user: user._id,
     });
 
+    // store reference in user's payments array
+// +    user.payments = Array.isArray(user.payments) ? user.payments : [];
++    user.payments.push(paymentDoc._id);
+
+    user.subscription = user.subscription || {};
     user.subscription.status = 'active';
     await user.save();
+
+    await Subscription.updateOne({ userId: user._id, razorpaySubscriptionId: subscriptionId }, { status: 'active' });
 
     res.status(200).json(
         new AppResponse(200,"Payment varified successfully")

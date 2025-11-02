@@ -31,6 +31,25 @@ const userSchema = new Schema({
             type: String
         }
     },
+    subscription: {
+        id: { type: String, default: null }, // razorpay subscription id
+        status: { 
+            type: String, 
+            enum: ['created','pending','active','cancelled','expired', null], 
+            default: null 
+        },
+        plan_id: { type: String, default: null }, // razorp ay plan id (optional)
+        startDate: { type: Date, default: null },
+        endDate: { type: Date, default: null }
+    },
+    payments: [{ 
+        type: Schema.Types.ObjectId, 
+        ref: 'Payment' }
+    ],
+    subscriptions: [{ 
+        type: Schema.Types.ObjectId, 
+        ref: 'Subscription' }
+    ],
     role: {
         type: String,
         enum: ['USER','ADMIN'],
