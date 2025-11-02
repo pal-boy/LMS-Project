@@ -11,7 +11,7 @@ const Checkout = () => {
     const navigate = useNavigate();
     const razorpaykey = useSelector((state) => state.razorpay.key);
     const subscription_id = useSelector((state) => state.razorpay.subscription_id);
-    const isPaymentVerified = useSelector((state) => state.razorpay.isPaymentVerified);
+    // const isPaymentVerified = useSelector((state) => state.razorpay.isPaymentVerified);
     const userData = useSelector((state) => state.auth.data);
     const courseData = useSelector((state) => state.course.courseData[0]);
     // console.log("Course Data : ",courseData);
@@ -43,14 +43,14 @@ const Checkout = () => {
                 color: "#F37254"
             },
             handler: async function(response) {
-                console.log("Handler Response : ",response);
+                // console.log("Handler Response : ",response);
                 paymentDetails.razorpay_payment_id = response.razorpay_payment_id;
                 paymentDetails.razorpay_subscription_id = response.razorpay_subscription_id;
                 paymentDetails.razorpay_signature = response.razorpay_signature;
-                console.log("Payment Details : ",paymentDetails);
+                // console.log("Payment Details : ",paymentDetails);
                 toast.success("Payment successful");
                 const res = await dispatch(verifySubscription(paymentDetails));
-                console.log("Verify subscription res :",res);
+                // console.log("Verify subscription res :",res);
                 res?.payload?.success ? navigate("/checkout/success") : navigate("/checkout/fail");
             }
         };

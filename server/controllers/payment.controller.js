@@ -91,7 +91,7 @@ const buySubscription = async (req, res,next) => {
             status: subscription.status || 'pending'
         };
         await user.save();
-        console.log("New subscription User",user);
+        // console.log("New subscription User",user);
         res.status(200).json(
             new AppResponse(200, subscription, "Subscribed successfully")
         );
