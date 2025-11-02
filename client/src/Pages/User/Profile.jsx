@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import HomeLayout from "../../Layouts/HomeLayout";
 import { getUserData } from "../../redux/slices/AuthSlice";
+import { cancelSubscription } from "../../redux/slices/RazorpaySlice";
 
 
 function Profile() {
@@ -13,6 +14,7 @@ function Profile() {
     //  console.log("User Data:", userData.avatar?.secure_url);
     async function handleCancellation() {
         toast("Initiating cancellation");
+        await dispatch(cancelSubscription());
         await dispatch(getUserData());
         toast.success("Cancellation completed!");
         navigate("/");
