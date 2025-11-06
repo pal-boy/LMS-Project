@@ -15,7 +15,7 @@ import EditProfile from './Pages/User/EditProfile.jsx'
 import Checkout from './Pages/Payment/Checkout.jsx'
 import CheckoutSuccess from './Pages/Payment/CheckoutSuccess.jsx'
 import CheckoutFailure from './Pages/Payment/CheckoutFailure.jsx'
-import DisplayLectures from './Pages/UserDashboard/displayLectures.jsx'
+import DisplayLectures from './Pages/UserDashboard/DisplayLectures.jsx'
 
 function App() {
 
