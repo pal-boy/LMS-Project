@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import HomeLayout from '../../Layouts/HomeLayout'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,7 +11,7 @@ const DisplayLectures = () => {
     const { state } = useLocation();
     const {lectures} = useSelector((state) => state.lectures);
     const {role} = useSelector((state) => state.auth);
-    const {currentVideo, setCurrentVideo} = React.useState(0);
+    const {currentVideo, setCurrentVideo} = useState(0);
 
     async function onLectureDelete(courseId, lectureId) {
         console.log("Deleting lecture:", courseId, lectureId);
@@ -20,6 +20,8 @@ const DisplayLectures = () => {
     }
 
     useEffect(() => {
+        // console.log("Lecture state ",lectures);
+        // console.log("Lecture state ",lectures[0]._id);
         console.log("DisplayLectures state", state);
         if(!state) {
             navigate('/courses');
@@ -31,7 +33,7 @@ const DisplayLectures = () => {
     <HomeLayout>
       <div className="flex flex-col gap-10 items-center justify-center min-h-[90vh] py-10 text-wihte mx-[5%]">
                 <div className="text-center text-2xl font-semibold text-yellow-500">
-                    Course Name: {state?.lectures.title}
+                    Course Name: <span className="text-white">{state?.title}</span>
                 </div>
 
                 {(lectures && lectures.length > 0 ) ?  
@@ -39,7 +41,7 @@ const DisplayLectures = () => {
                     {/* left section for playing videos and displaying course details to admin */}
                    <div className="space-y-5 w-[28rem] p-2 rounded-lg shadow-[0_0_10px_black]">
                         <video 
-                            src={lectures && lectures[currentVideo]?.lecture?.secure_url}
+                            src={lectures[0]?.lecture?.secure_url}
                             className="object-fill rounded-tl-lg rounded-tr-lg w-full"   
                             controls
                             disablePictureInPicture
@@ -48,17 +50,17 @@ const DisplayLectures = () => {
 
                         >
                         </video>    
-                        <div>
+                        <div className='text-white'>
                             <h1>
                                 <span className="text-yellow-500"> Title: {" "}
                                 </span>
-                                {lectures && lectures[currentVideo]?.title}
+                                {lectures[0]?.title}
                             </h1>
                             <p>
                                 <span className="text-yellow-500 line-clamp-4">
                                     Description: {" "}
                                 </span>
-                                {lectures && lectures[currentVideo]?.description}
+                                {lectures[0]?.description}
                             </p>
                         </div>
                    </div>
@@ -68,7 +70,7 @@ const DisplayLectures = () => {
                         <li className="font-semibold text-xl text-yellow-500 flex items-center justify-between">
                             <p>Lectures list</p>
                             {role === "ADMIN" && (
-                                <button onClick={() => navigate("/course/addlecture", {state: {...state}})} className="btn-primary px-2 py-1 rounded-md font-semibold text-sm">
+                                <button onClick={() => navigate("/course/addlecture", {state: {...state}})} className="bg-green-500 px-2 py-1 rounded-md font-semibold text-sm text-white">
                                     Add new lecture
                                 </button>
                             )}
@@ -76,15 +78,15 @@ const DisplayLectures = () => {
                         {lectures && 
                             lectures.map((lecture, idx) => {
                                 return (
-                                    <li className="space-y-2" key={lecture._id} >
+                                    <li className="text-white space-y-2" key={lecture._id} >
                                         <p className="cursor-pointer" onClick={() => setCurrentVideo(idx)}>
-                                            <span>
+                                            <span className='text-yellow-400'>
                                                 {" "} Lecture {idx + 1} : {" "}
                                             </span>
                                             {lecture?.title}
                                         </p>
                                         {role === "ADMIN" && (
-                                            <button onClick={() => onLectureDelete(state?._id, lecture?._id)} className="btn-accent px-2 py-1 rounded-md font-semibold text-sm">
+                                            <button onClick={() => onLectureDelete(state?._id, lecture?._id)} className="bg-red-500 px-2 py-1 rounded-md font-semibold text-sm">
                                                 Delete lecture
                                             </button>
                                         )}
