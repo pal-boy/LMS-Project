@@ -11,7 +11,7 @@ const DisplayLectures = () => {
     const { state } = useLocation();
     const {lectures} = useSelector((state) => state.lectures);
     const {role} = useSelector((state) => state.auth);
-    const {currentVideo, setCurrentVideo} = useState(0);
+    const [currentVideo, setCurrentVideo] = useState(0);
 
     async function onLectureDelete(courseId, lectureId) {
         console.log("Deleting lecture:", courseId, lectureId);
@@ -41,7 +41,7 @@ const DisplayLectures = () => {
                     {/* left section for playing videos and displaying course details to admin */}
                    <div className="space-y-5 w-[28rem] p-2 rounded-lg shadow-[0_0_10px_black]">
                         <video 
-                            src={lectures[0]?.lecture?.secure_url}
+                            src={lectures[currentVideo]?.lecture?.secure_url}
                             className="object-fill rounded-tl-lg rounded-tr-lg w-full"   
                             controls
                             disablePictureInPicture
@@ -54,13 +54,13 @@ const DisplayLectures = () => {
                             <h1>
                                 <span className="text-yellow-500"> Title: {" "}
                                 </span>
-                                {lectures[0]?.title}
+                                {lectures[currentVideo]?.title}
                             </h1>
                             <p>
                                 <span className="text-yellow-500 line-clamp-4">
                                     Description: {" "}
                                 </span>
-                                {lectures[0]?.description}
+                                {lectures[currentVideo]?.description}
                             </p>
                         </div>
                    </div>
@@ -97,7 +97,7 @@ const DisplayLectures = () => {
                    </ul>
                 </div>) : (
                     role === "ADMIN" && (
-                        <button onClick={() => navigate("/course/addlecture", {state: {...state}})} className="btn-primary px-2 py-1 rounded-md font-semibold text-sm">
+                        <button onClick={() => navigate("/course/addlecture", {state: {...state}})} className="bg-green-500 px-2 py-1 rounded-md font-semibold text-sm">
                             Add new lecture
                         </button>
                     )
