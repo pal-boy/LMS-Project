@@ -24,11 +24,13 @@ export const getCourseLectures = createAsyncThunk("course/lecture/get",async(cId
 
 export const addCourseLecture = createAsyncThunk("course/lecture/add",async(data)=>{
     try {
-        const formData = new FormData();
-        formData.append("title",data.title);
-        formData.append("description",data.description);
-        formData.append("video",data.video);
-        const response = axiosInstance.post(`/courses/${data.id}`,formData,{
+        // console.log("user input data at lectureSlice.js ",data);
+        // const formData = new FormData();
+        // formData.append("title",data.title);
+        // formData.append("description",data.description);
+        // formData.append("video",data.video);
+        // console.log("user input data at lectureSlice.js at line 32 ",formData);
+        const response = axiosInstance.post(`/courses/${data.id}`,data,{
             headers : {
                 "Content-Type" : "multipart/form-data"
             }
@@ -45,7 +47,7 @@ export const addCourseLecture = createAsyncThunk("course/lecture/add",async(data
 });
 export const deleteCourseLecture = createAsyncThunk("course/lecture/delete",async(data)=>{
     try {
-        const response = axiosInstance.delete(`/courses?courseId=${data.courseId}&lectureId=${data.lectureId}`);
+        const response = axiosInstance.delete(`/courses/${data.courseId}/course/${data.lectureId}`);
         toast.promise(response,{
             loading : "deleting course Lecture",
             success : "Lecture deleted successfully",
