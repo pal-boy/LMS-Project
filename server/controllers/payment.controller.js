@@ -190,7 +190,7 @@ const getAllPayments = async(req,res,next)=>{
     const subscriptions = await razorpay.subscriptions.all({
         count : count || 10
     });
-
+    // console.log("Subscriptions count ",subscriptions);
     res.status(200).json(
         new AppResponse(200, subscriptions , "All Payments")
     );
