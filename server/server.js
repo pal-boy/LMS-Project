@@ -11,7 +11,7 @@ import Razorpay from "razorpay";
 config();
 
 
-// const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000;
 
 // cloudinary configuraton
 v2.config({
@@ -27,12 +27,12 @@ export const razorpay = new Razorpay({
 });
 
 
-await connectionToDB();
+// await connectionToDB();
 
-// const App =  app.listen(PORT,async()=>{
-//     await connectionToDB();
-//     console.log(`App is running at http://localhost:${PORT}`);
-// });
-// export default App;
+const App =  app.listen(PORT,async()=>{
+    await connectionToDB();
+    console.log(`App is running at http://localhost:${PORT}`);
+});
+export default App;
 
-module.exports = app;
+// module.exports = app;
