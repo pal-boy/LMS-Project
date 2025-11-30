@@ -10,10 +10,8 @@ import Razorpay from "razorpay";
 
 config();
 
-// const { createServer } = vercelNode;
-// Create HTTP server
-// const server = http.createServer(app);
-const PORT = process.env.PORT || 5000;
+
+// const PORT = process.env.PORT || 5000;
 
 // cloudinary configuraton
 v2.config({
@@ -28,22 +26,13 @@ export const razorpay = new Razorpay({
     key_secret : process.env.RAZORPAY_SECRET
 });
 
-// if (!global.serverInstance) {
-//     global.serverInstance = server.listen(PORT,async()=>{
-//         await connectionToDB();
-//         console.log(`App is running at http://localhost:${PORT}`);
-//     });
-// }
 
-// export default createServer(app);
-// export default server;
-// export default app.listen(PORT,async()=>{
+await connectionToDB();
+
+// const App =  app.listen(PORT,async()=>{
 //     await connectionToDB();
 //     console.log(`App is running at http://localhost:${PORT}`);
 // });
+// export default App;
 
-const App =  app.listen(PORT,async()=>{
-    await connectionToDB();
-    console.log(`App is running at http://localhost:${PORT}`);
-});
-export default App;
+module.exports = app;
