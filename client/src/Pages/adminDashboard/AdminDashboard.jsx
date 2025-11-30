@@ -18,7 +18,7 @@ const AdminDashboard = () => {
   const dispatch = useDispatch();
     const navigate = useNavigate();
     
-    const { allUsersCount, subscribedCount } = useSelector((state) => state.stats);
+    const { allUsersCount, subscribedCount,totalPayments,totalRevenue } = useSelector((state) => state.stats);
 
     const { allPayments, monthlySalesRecord } = useSelector((state) => state.razorpay);
 
@@ -29,10 +29,10 @@ const AdminDashboard = () => {
         datasets: [
             {
                 label: "User Details",
-                data: [allUsersCount, subscribedCount],
-                backgroundColor: ["yellow", "green"],
+                data: [allUsersCount, subscribedCount,totalPayments,totalRevenue],
+                backgroundColor: ["yellow", "green","red","blue"],
                 borderWidth: 1,
-                borderColor: ["yellow","green"]
+                borderColor: ["yellow","green","red","blue"]
             },
         ]
     };
